@@ -26,6 +26,7 @@ namespace Brunchie.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<BrunchieUser> _signInManager;
         private readonly UserManager<BrunchieUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserStore<BrunchieUser> _userStore;
         private readonly IUserEmailStore<BrunchieUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
@@ -33,6 +34,7 @@ namespace Brunchie.Areas.Identity.Pages.Account
 
         public RegisterModel(
             UserManager<BrunchieUser> userManager,
+            RoleManager<IdentityRole> roleManager,
             IUserStore<BrunchieUser> userStore,
             SignInManager<BrunchieUser> signInManager,
             ILogger<RegisterModel> logger,
@@ -40,6 +42,7 @@ namespace Brunchie.Areas.Identity.Pages.Account
         {
             _userManager = userManager;
             _userStore = userStore;
+            _roleManager = roleManager;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
@@ -71,6 +74,10 @@ namespace Brunchie.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
+            [Required]
+            [Display(Name = "Username")]
+            public string Username { get; set; }
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -98,6 +105,9 @@ namespace Brunchie.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Display(Name = "Role")]
+            public string Role { get; set; }
         }
 
 
@@ -115,7 +125,16 @@ namespace Brunchie.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                if (!string.IsNullOrEmpty(Input.Role))
+                {
+                    if (!await _roleManager.RoleExistsAsync(Input.Role))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(Input.Role));
+                    }
+                    await _userManager.AddToRoleAsync(user, Input.Role);
+                }
+
+                await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 

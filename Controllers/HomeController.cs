@@ -1,4 +1,5 @@
 using Brunchie.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -15,6 +16,20 @@ namespace Brunchie.Controllers
 
         public IActionResult Index()
         {
+            if (User.Identity != null)
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    if (User.IsInRole("Student"))
+                    {
+                        return RedirectToAction("Index", "Student");
+                    }
+                    else if (User.IsInRole("Vendor"))
+                    {
+                        return RedirectToAction("Index", "Vendor");
+                    }
+                }
+            }
             return View();
         }
 
