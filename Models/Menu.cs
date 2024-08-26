@@ -22,6 +22,6 @@
     {
         public int Id { get; set; }
         public string VendorId { get; set; } = string.Empty;
-        public List<MenuItem> Items { get; set; }
+        public List<MenuItem>? Items { get; set; }
     }
 }

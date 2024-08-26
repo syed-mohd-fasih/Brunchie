@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Brunchie.Data;
+using Brunchie.Areas.Identity.Data;
 namespace Brunchie
 {
     public class Program
@@ -9,13 +10,16 @@ namespace Brunchie
         {
             var builder = WebApplication.CreateBuilder(args);
             var connectionString = builder.Configuration.GetConnectionString("UserDbContextConnection") ?? throw new InvalidOperationException("Connection string 'UserDbContextConnection' not found.");
+            var appConnectionString = builder.Configuration.GetConnectionString("AppDbContextConnection") ?? throw new InvalidOperationException("Connection string 'UserDbContextConnection' not found.");
 
             builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlServer(connectionString));
+            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(appConnectionString));
 
             builder.Services.AddDefaultIdentity<BrunchieUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<UserDbContext>();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddRazorPages();
 
             var app = builder.Build();
 
@@ -31,12 +35,13 @@ namespace Brunchie
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+            app.MapRazorPages();
 
             app.Run();
         }

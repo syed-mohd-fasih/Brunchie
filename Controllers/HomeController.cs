@@ -18,6 +18,18 @@ namespace Brunchie.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult RegisterAsVendor()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult RegisterAsStudent()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

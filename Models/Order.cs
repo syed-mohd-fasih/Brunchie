@@ -13,7 +13,7 @@
         public int Id { get; set; }
         public string StudentId { get; set; } = string.Empty;
         public string VendorId { get; set; } = string.Empty;
-        public List<OrderItem> OrderItems { get; set; }
+        public List<OrderItem>? OrderItems { get; set; }
         public DateTime DateOrdered { get; set; }
         public enum OrderStatus
         {
