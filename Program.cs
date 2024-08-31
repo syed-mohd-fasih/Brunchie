@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Brunchie.Data;
 using Brunchie.Areas.Identity.Data;
+using Brunchie.Services;
 namespace Brunchie
 {
     public class Program
@@ -29,6 +30,9 @@ namespace Brunchie
                 options.AddPolicy("vendor", policy => policy.RequireRole("Vendor"));
                 options.AddPolicy("student", policy => policy.RequireRole("Student"));
             });
+
+            builder.Services.AddScoped<VendorService>();
+            builder.Services.AddScoped<StudentService>();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();

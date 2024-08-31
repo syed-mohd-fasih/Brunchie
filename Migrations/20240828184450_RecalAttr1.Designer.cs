@@ -4,6 +4,7 @@ using Brunchie.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Brunchie.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240828184450_RecalAttr1")]
+    partial class RecalAttr1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,9 +36,6 @@ namespace Brunchie.Migrations
                     b.Property<string>("StudentId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -101,10 +101,6 @@ namespace Brunchie.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("VendorId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -128,7 +124,6 @@ namespace Brunchie.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MenuId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
@@ -142,7 +137,7 @@ namespace Brunchie.Migrations
 
                     b.HasIndex("MenuId");
 
-                    b.ToTable("MenuItems");
+                    b.ToTable("MenuItem");
                 });
 
             modelBuilder.Entity("Brunchie.Models.Order", b =>
@@ -150,7 +145,7 @@ namespace Brunchie.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("CartId")
+                    b.Property<int?>("CartId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateOrdered")
@@ -185,9 +180,8 @@ namespace Brunchie.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ItemName")
+                        .HasColumnType("int");
 
                     b.Property<string>("OrderId")
                         .HasColumnType("nvarchar(450)");
@@ -206,7 +200,7 @@ namespace Brunchie.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItem");
                 });
 
             modelBuilder.Entity("Brunchie.Models.Review", b =>
@@ -244,18 +238,14 @@ namespace Brunchie.Migrations
                 {
                     b.HasOne("Brunchie.Models.Menu", null)
                         .WithMany("MenuItems")
-                        .HasForeignKey("MenuId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MenuId");
                 });
 
             modelBuilder.Entity("Brunchie.Models.Order", b =>
                 {
                     b.HasOne("Brunchie.Models.Cart", null)
                         .WithMany("Orders")
-                        .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CartId");
                 });
 
             modelBuilder.Entity("Brunchie.Models.OrderItem", b =>

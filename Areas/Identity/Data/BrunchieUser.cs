@@ -17,12 +17,14 @@ public class BrunchieUser : IdentityUser
     // Student-specific properties
     public bool IsStudent { get; set; }
     public string StudentUniId { get; set; } = string.Empty;
-    public string University { get; set; } = string.Empty;
+    public string StudentContact { get; set; } = string.Empty;
+    public string CampusName { get; set; } = string.Empty;
 
     // Vendor-specific properties
     public bool IsVendor { get; set; }
     public string VendorName { get; set; } = string.Empty;
     public string VendorAddress { get; set; } = string.Empty;
+    public string VendorContact {  get; set; } = string.Empty;
 
     // Admin-specific properties
     public bool IsAdmin { get; set; }

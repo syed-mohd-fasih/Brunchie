@@ -1,0 +1,94 @@
+﻿@{
+    ViewData["Title"] = "Add New Menu";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Add New Menu</h2>
+
+    <form asp-action="AddMenu" method="post">
+        <div class="mb-3">
+            <label for="MenuName" class="form-label">Menu Name</label>
+            <input id="MenuName" name="MenuName" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Menu Items</label>
+
+            <div id="menuItemsContainer">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="form-label">Item Name</label>
+                                <input name="ItemNames" class="form-control" />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Description</label>
+                                <input name="ItemDescriptions" class="form-control" />
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Image URL</label>
+                                <input name="ItemImages" class="form-control" />
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Price</label>
+                                <input name="ItemPrices" class="form-control" />
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button type="button" class="btn btn-danger" onclick="removeMenuItem(this)">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-primary mt-2" onclick="addMenuItem()">Add Menu Item</button>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save Menu</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        function addMenuItem() {
+            var container = document.getElementById('menuItemsContainer');
+            var index = container.children.length;
+
+            var template = `
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label class="form-label">Item Name</label>
+                                        <input name="ItemNames" class="form-control" />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Description</label>
+                                        <input name="ItemDescriptions" class="form-control" />
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="form-label">Image URL</label>
+                                        <input name="ItemImages" class="form-control" />
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="form-label">Price</label>
+                                        <input name="ItemPrices" class="form-control" />
+                                    </div>
+                                    <div class="col-md-2 d-flex align-items-end">
+                                        <button type="button" class="btn btn-danger" onclick="removeMenuItem(this)">Remove</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+            container.insertAdjacentHTML('beforeend', template);
+        }
+
+        function removeMenuItem(button) {
+            var card = button.closest('.card');
+            card.remove();
+        }
+    </script>
+}
