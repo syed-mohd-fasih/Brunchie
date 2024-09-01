@@ -1,0 +1,42 @@
+﻿@model Brunchie.Models.MenuItem
+
+<div class="container mt-4">
+    <h2>Add @Model.Name to Cart</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <img src="@Model.Image" alt="@Model.Name" class="img-fluid" />
+        </div>
+        <div class="col-md-6">
+            <form asp-action="AddToCart" method="post">
+                <input type="hidden" name="menuItemId" value="@Model.Id" />
+                <div class="form-group">
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" name="quantity" id="quantity" value="1" class="form-control" min="1" />
+                </div>
+                <div class="form-group">
+                    <label for="specialInstructions">Special Instructions:</label>
+                    <textarea name="specialInstructions" id="specialInstructions" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Total Price: </label>
+                    <span id="totalPrice">@Model.Price.ToString("C")</span>
+                </div>
+                <button type="submit" class="btn btn-primary">Add to Cart</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const pricePerItem = @Model.Price;
+        const quantityInput = document.getElementById("quantity");
+        const totalPriceElement = document.getElementById("totalPrice");
+
+        quantityInput.addEventListener("input", function () {
+            const quantity = parseInt(quantityInput.value) || 1;
+            const totalPrice = (pricePerItem * quantity).toFixed(2);
+            totalPriceElement.innerText = `$${totalPrice}`;
+        });
+    </script>
+}

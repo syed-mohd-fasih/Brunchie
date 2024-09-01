@@ -5,7 +5,7 @@
 
 <div class="container mt-4">
     <h1 class="mb-4">Vendor Dashboard</h1>
-
+    <h3 class="mb-4">@Model.CampusName</h3>
     <!-- Vendor Info Section -->
     <section class="mb-5">
         <div class="card">
@@ -63,8 +63,16 @@
                                 <td>@order.DateOrdered.ToString("hh:mm tt")</td>
                                 <td>@order.Status</td>
                                 <td>
-                                    <a asp-action="UpdateOrderStatus" asp-route-id="@order.Id" asp-route-status="Recieved" class="btn btn-success btn-sm">Mark as Recieved</a>
-                                    <a asp-action="UpdateOrderStatus" asp-route-id="@order.Id" asp-route-status="Cancelled" class="btn btn-danger btn-sm">Cancel Order</a>
+                                    <form asp-action="UpdateOrderStatus" method="post">
+                                        <input type="hidden" name="id" value="@order.Id" />
+                                        <input type="hidden" name="status" value="@Order.OrderStatus.Completed" />
+                                        <button type="submit" class="btn btn-success">Mark as Completed</button>
+                                    </form>
+                                    <form asp-action="UpdateOrderStatus" method="post">
+                                        <input type="hidden" name="id" value="@order.Id" />
+                                        <input type="hidden" name="status" value="@Order.OrderStatus.Cancelled" />
+                                        <button type="submit" class="btn btn-danger">Cancel Order</button>
+                                    </form>
                                 </td>
                             </tr>
                         }

@@ -5,8 +5,10 @@
         public string Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public int Quantity { get; set; }
+        public decimal PricePerPiece { get; set; }
         public decimal Price { get; set; }
         public string SpecialInstruction { get; set; } = string.Empty;
+        public string OrderId { get; set; } = string.Empty;
     }
 
     public class Order

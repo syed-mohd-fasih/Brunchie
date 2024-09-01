@@ -4,6 +4,8 @@ namespace Brunchie.ViewModels
 {
     public class VendorDashboardModel
     {
+        public string CampusName { get; set; } = string.Empty;
+
         // Orders placed today
         public List<Order>? TodayOrders { get; set; }
         public List<Order>? CompletedOrders { get; set; }

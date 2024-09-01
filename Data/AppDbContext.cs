@@ -21,6 +21,9 @@ namespace Brunchie.Data
             modelBuilder.Entity<OrderItem>()
                 .Property(m => m.Price)
                 .HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<OrderItem>()
+                .Property(m => m.PricePerPiece)
+                .HasColumnType("decimal(18,2)");
             modelBuilder.Entity<Order>()
                 .Property(m => m.TotalPrice)
                 .HasColumnType("decimal(18,2)");

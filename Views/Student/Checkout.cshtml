@@ -1,0 +1,61 @@
+﻿@model Brunchie.Models.Cart
+
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<div class="container">
+    <h2>Your Cart</h2>
+    @if (Model.Orders != null && Model.Orders.Count > 0)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Vendor</th>
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Special Instructions</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model.Orders)
+                {
+                    foreach (var item in order.OrderItems)
+                    {
+                        <tr>
+                            <td>@order.VendorId</td>
+                            <td>@item.Name</td>
+                            <td>
+                                <form asp-action="UpdateCart" method="post">
+                                    <input type="hidden" name="itemId" value="@item.Id" />
+                                    <input type="number" name="quantity" value="@item.Quantity" class="form-control" />
+                                    <button type="submit" class="btn btn-primary">Update</button>
+                                </form>
+                            </td>
+                            <td>@item.Price.ToString("C")</td>
+                            <td>@item.SpecialInstruction</td>
+                            <td>
+                                <form asp-action="RemoveItem" method="post">
+                                    <input type="hidden" name="itemId" value="@item.Id" />
+                                    <button type="submit" class="btn btn-danger">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+        <h4>Total Price: @Model.Orders.Sum(o => o.TotalPrice).ToString("C")</h4>
+
+        <form asp-action="PlaceOrder" method="post">
+            <button type="submit" class="btn btn-success">Place Order</button>
+        </form>
+    }
+    else
+    {
+        <p>Your cart is empty.</p>
+    }
+</div>

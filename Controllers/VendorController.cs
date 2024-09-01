@@ -1,8 +1,10 @@
-﻿using Brunchie.Data;
+﻿using Brunchie.Areas.Identity.Data;
+using Brunchie.Data;
 using Brunchie.Models;
 using Brunchie.Services;
 using Brunchie.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -10,17 +12,24 @@ using System.Security.Claims;
 namespace Brunchie.Controllers
 {
     [Authorize(Policy = "vendor")]
-    public class VendorController(ILogger<VendorController> logger, VendorService vendorService, StudentService studentService, AppDbContext appDbContext)
+    public class VendorController(ILogger<VendorController> logger, UserManager<BrunchieUser> userManager, VendorService vendorService, StudentService studentService, AppDbContext appDbContext)
         : Controller
     {
         public ILogger<VendorController> _logger = logger;
+        public UserManager<BrunchieUser> _userManager = userManager;
         public VendorService _vendorService = vendorService;
         public StudentService _studentService = studentService;
         public AppDbContext _appDbContext = appDbContext;
 
         public async Task<IActionResult> Index()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.GetUserAsync(User);
+            if(user == null)
+            {
+                return NotFound();
+            }
+            var userId = user.Id;
+            var userCampus = user.CampusName;
 
             var orders = await _appDbContext.Orders
                 .Where(o => o.VendorId == userId && o.Status == Order.OrderStatus.Received)
@@ -48,6 +57,7 @@ namespace Brunchie.Controllers
 
             VendorDashboardModel model = new VendorDashboardModel
             {
+                CampusName = userCampus,
                 TodayOrders = orders,
                 CompletedOrders = completedOrders,
                 Menus = menus,
@@ -179,7 +189,7 @@ namespace Brunchie.Controllers
                 await _appDbContext.SaveChangesAsync();
             }
 
-            return RedirectToAction("Orders");
+            return RedirectToAction(nameof(Index));
         }
     }
 }

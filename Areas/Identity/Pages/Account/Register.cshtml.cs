@@ -19,13 +19,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using System.Drawing;
 
 namespace Brunchie.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<BrunchieUser> _signInManager;
-        private readonly UserManager<BrunchieUser> _userManager;
+        private readonly UserManager<BrunchieUser> _userManager;    
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserStore<BrunchieUser> _userStore;
         private readonly IUserEmailStore<BrunchieUser> _emailStore;
@@ -108,6 +109,10 @@ namespace Brunchie.Areas.Identity.Pages.Account
 
             [Display(Name = "Role")]
             public string Role { get; set; }
+
+            [Required]
+            [Display(Name = "CampusName")]
+            public string CampusName { get; set; }
         }
 
 
@@ -136,6 +141,7 @@ namespace Brunchie.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.CampusName = Input.CampusName;
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
