@@ -28,6 +28,6 @@
             Cancelled
         }
         public OrderStatus Status { get; set; }
-        public int CartId { get; set; }
+        public int? CartId { get; set; }
     }
 }

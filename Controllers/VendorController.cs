@@ -185,8 +185,19 @@ namespace Brunchie.Controllers
             if (order != null)
             {
                 order.Status = status;
+
+                if(status == Order.OrderStatus.Completed)
+                {
+                    await _appDbContext.CompletedOrders.AddRangeAsync(order);
+                    _appDbContext.Orders.Remove(order);
+                }
+
                 _appDbContext.Orders.Update(order);
                 await _appDbContext.SaveChangesAsync();
+            }
+            else
+            {
+                _logger.LogError($"{nameof(UpdateOrderStatus)}: Order not found");
             }
 
             return RedirectToAction(nameof(Index));

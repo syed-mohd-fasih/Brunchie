@@ -204,7 +204,7 @@ namespace Brunchie.Controllers
                 {
                     order.Status = Order.OrderStatus.Received;
                     order.DateOrdered = DateTime.Now;
-                    order.TotalPrice = order.OrderItems.Sum(oi => oi.Price * oi.Quantity);
+                    order.TotalPrice = order.OrderItems.Sum(oi => oi.Price);
 
                     // Add the processed order to the list
                     processedOrders.Add(order);
@@ -219,11 +219,11 @@ namespace Brunchie.Controllers
                 // Save changes to update the cart with cleared orders
                 await _appDbContext.SaveChangesAsync();
 
-                // Add the processed orders to the Orders table
-                await _appDbContext.Orders.AddRangeAsync(processedOrders);
+                //// Add the processed orders to the Orders table
+                //await _appDbContext.Orders.AddRangeAsync(processedOrders);
 
-                // Save the changes to the database to store the new orders
-                await _appDbContext.SaveChangesAsync();
+                //// Save the changes to the database to store the new orders
+                //await _appDbContext.SaveChangesAsync();
             }
 
             return RedirectToAction(nameof(OrderConfirmation));
