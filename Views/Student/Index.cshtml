@@ -4,125 +4,67 @@
     ViewData["Title"] = "Student Dashboard";
 }
 
-<div class="container">
-    <h1>Welcome to Brunchie</h1>
-    <h2>@Model.CampusName Campus Dashboard</h2>
+<div class="container-fluid d-flex h-100 p-0">
+    <!-- Main Content Area -->
+    <div class="container w-75 h-100 p-1">
+        <h1 class="p-3">Hello, @User.Identity.Name</h1>
 
-    <div class="row mt-4">
-        <div class="col-md-8">
-            <h3>Available Menu Items</h3>
-            <div class="card mb-4">
-                <div class="card-body">
-                    @if (Model.CampusMenuItems != null && Model.CampusMenuItems.Any())
+        <div class="content-container">
+            <!-- Content from your provided view -->
+            <!-- Campus Available Meals Carousel -->
+            <h2>Campus Available Meals</h2>
+            <div class="scroll-container">
+                @if (Model.CampusMenuItems != null && Model.CampusMenuItems.Any())
+                {
+                    @foreach (var item in Model.CampusMenuItems)
                     {
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Item Name</th>
-                                    <th>Description</th>
-                                    <th>Price</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model.CampusMenuItems)
-                                {
-                                    <tr>
-                                        <td>@item.Name</td>
-                                        <td>@item.Description</td>
-                                        <td>@item.Price.ToString("C")</td>
-                                        <td>
-                                            <form asp-action="AddToCart" method="get">
-                                                <input type="hidden" name="menuItemId" value="@item.Id" />
-                                                <button type="submit" class="btn btn-primary">Add to Cart</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+                        <div class="card">
+                            <img src="@item.Image" class="card-img-top" alt="@item.Name">
+                            <div class="card-body">
+                                <h5 class="card-title">@item.Name</h5>
+                                <p class="card-text">@item.Description</p>
+                                <form asp-action="AddToCart" method="get">
+                                    <input type="hidden" name="menuItemId" value="@item.Id" />
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     }
-                    else
-                    {
-                        <p>No menu items available for your campus.</p>
-                    }
-                </div>
+                }
+                else
+                {
+                    <p>There are no menu items to order in your University/College</p>
+                }
             </div>
         </div>
+    </div>
 
-        <div class="col-md-4">
-            <h3>Your Cart</h3>
-            <div class="card">
-                <div class="card-body">
-                    @if (Model.StudentCart != null && Model.StudentCart.Orders != null && Model.StudentCart.Orders.Any())
-                    {
-                        <ul class="list-group">
-                            @foreach (var order in Model.StudentCart.Orders)
-                            {
-                                <li class="list-group-item">
-                                    <strong>Order ID:</strong> @order.Id <br />
-                                    <ul>
-                                        @foreach(var item in order.OrderItems)
-                                        {
-                                            <li>@item.Name (@item.Quantity)</li>
-                                        }
-                                    </ul>
-                                    <strong>Total Price:</strong> @order.TotalPrice.ToString("C") <br />
-                                    <strong>Status:</strong> @order.Status
-                                </li>
-                            }
-                        </ul>
-                        <a asp-action="Checkout" class="btn btn-success mt-3">Proceed to Checkout</a>
-                    }
-                    else
-                    {
-                        <p>Your cart is empty.</p>
-                    }
-                </div>
-            </div>
+    <!-- Cart Column -->
+    <div class="bg-light border-left w-25 h-100 p-3">
+        <div>
+            Account Details here
         </div>
-
-        <section class="active-orders mb-5">
-            <h2>Your Active Orders</h2>
-
-            @if (Model.ActiveOrders != null && Model.ActiveOrders.Any())
+        <h3>Card</h3>
+        <!-- Some kind of debit/credit card div that shows account balance -->
+        <h3>Cart</h3>
+        @if (Model.StudentCart != null && Model.StudentCart.Orders != null && Model.StudentCart.Orders.Any())
+        {
+            @foreach (var order in Model.StudentCart.Orders)
             {
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Items</th>
-                            <th>Total Price</th>
-                            <th>Order Time</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var order in Model.ActiveOrders)
-                        {
-                            <tr>
-                                <td>@order.Id</td>
-                                <td>
-                                    <ul>
-                                        @foreach (var item in order.OrderItems)
-                                        {
-                                            <li>@item.Name (@item.Quantity) - @item.Price.ToString("C")</li>
-                                        }
-                                    </ul>
-                                </td>
-                                <td>@order.TotalPrice.ToString("C")</td>
-                                <td>@order.DateOrdered.ToString("MMMM dd, yyyy hh:mm tt")</td>
-                                <td>@order.Status</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                @foreach(var item in order.OrderItems)
+                {
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Name (@item.Quantity) @@ @item.PricePerPiece</h5>
+                            <h6 class="card-text">@item.SpecialInstruction</h6>
+                        </div>
+                        <h3>@item.Price</h3>
+                    </div>
+                }
             }
-            else
-            {
-                <p>You have no active orders at the moment.</p>
-            }
-        </section>
-
+            <a asp-action="Checkout" class="btn btn-success mt-3">Proceed to Checkout</a>
+        }
     </div>
 </div>
