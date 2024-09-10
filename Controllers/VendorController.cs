@@ -121,9 +121,11 @@ namespace Brunchie.Controllers
         [HttpGet]
         public async Task<IActionResult> EditMenu(string id)
         {
+            _logger.LogInformation($"{nameof(EditMenu)}: HttpGet was accessed");
             var menu = await _appDbContext.Menus.Include(m => m.MenuItems).FirstOrDefaultAsync(m => m.Id == id);
             if (menu == null)
             {
+                _logger.LogError($"{nameof(EditMenu)}: Menu Not found");
                 return NotFound();
             }
 
@@ -134,9 +136,11 @@ namespace Brunchie.Controllers
         [HttpPost]
         public async Task<IActionResult> EditMenu(string id, string[] ItemNames, string[] ItemDescriptions, string[] ItemImages, decimal[] ItemPrices)
         {
+            _logger.LogInformation($"{nameof(EditMenu)}: HttpPost was accessed");
             var menu = await _appDbContext.Menus.Include(m => m.MenuItems).FirstOrDefaultAsync(m => m.Id == id);
             if (menu == null)
             {
+                _logger.LogError($"{nameof(EditMenu)}: Menu Not found");
                 return NotFound();
             }
 
@@ -156,7 +160,7 @@ namespace Brunchie.Controllers
             _appDbContext.Update(menu);
             await _appDbContext.SaveChangesAsync();
 
-            return RedirectToAction("Dashboard");
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]

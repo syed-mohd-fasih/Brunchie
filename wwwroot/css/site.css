@@ -23,6 +23,27 @@ html, body {
     padding: 0
 }
 
+/* Light/Dark/Color Mode config */
+
+:root {
+    --background-color: white;
+    --text-color: black;
+}
+
+.dark-mode {
+    --background-color: #121212;
+    --text-color: #ffffff;
+}
+
+.dark-mode-icon {
+    --icon-color: var(--text-color);
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
 /* Custom CSS */
 
 .content-container {
@@ -52,3 +73,16 @@ html, body {
     min-width: 250px;
     margin-right: 25px;
 }
+
+.form-container {
+    min-width: 400px;
+    margin: 50px auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+    .form-container h2 {
+        margin-bottom: 1.5rem;
+    }

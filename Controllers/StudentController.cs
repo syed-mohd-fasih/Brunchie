@@ -182,7 +182,7 @@ namespace Brunchie.Controllers
                 }
             }
 
-            return RedirectToAction(nameof(UpdateCart));
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Student/PlaceOrder

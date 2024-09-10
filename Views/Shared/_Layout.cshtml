@@ -12,7 +12,7 @@
 <body>
     <div class="d-flex">
         <!-- Vertical Navbar -->
-        <div class="bg-black text-white vh-100 d-flex flex-column p-3" style="width: 100px;">
+        <div class="bg-white text-white vh-100 d-flex flex-column p-3" style="width: 100px;">
             <!-- Logo -->
             <div class="mb-4">
                 <img src="~/assets/temp.png" alt="Logo" class="mb-4 img-fluid" />
@@ -20,58 +20,89 @@
 
             <!-- Menu Items -->
             <ul class="nav flex-column mb-4">
-                <li class="nav-item mb-3">
+                <li class="nav-item mb-3 ms-auto me-auto">
                     <a asp-action="Index" class="nav-link text-white">
-                        <i class="fas fa-home"></i>
+                        <i class="fas fa-home" style="color: black;"></i>
                     </a>
                 </li>
-                <li class="nav-item mb-3">
+                <li class="nav-item mb-3 ms-auto me-auto">
                     <a asp-action="Favorites" class="nav-link text-white">
-                        <i class="fas fa-heart"></i>
+                        <i class="fas fa-heart fa-lg" style="color: black;"></i>
                     </a>
                 </li>
-                <li class="nav-item mb-3">
+                <li class="nav-item mb-3 ms-auto me-auto">
                     <a asp-action="Feedback" class="nav-link text-white">
-                        <i class="fas fa-comment-alt"></i>
+                        <i class="fas fa-comment-alt fa-lg" style="color: black;"></i>
                     </a>
                 </li>
-                <li class="nav-item mb-3">
+                <li class="nav-item mb-3 ms-auto me-auto">
                     <a asp-action="ActiveOrders" class="nav-link text-white">
-                        <i class="fa-solid fa-bag-shopping"></i>
+                        <i class="fa-solid fa-bag-shopping fa-lg" style="color: black;"></i>
                     </a>
                 </li>
-                <li class="nav-item mb-3">
+                <li class="nav-item mb-3 ms-auto me-auto">
                     <a asp-action="History" class="nav-link text-white">
-                        <i class="fas fa-history"></i>
+                        <i class="fas fa-history fa-lg" style="color: black;"></i>
                     </a>
                 </li>
             </ul>
 
+            <!-- Theme Changer -->
+            <div>
+                <button id="toggleDarkMode" class="btn">
+                    <i id="moonIcon" class="fa-solid fa-moon fa-lg" style="color: black;"></i>
+                    <i id="sunIcon" class="fa-solid fa-sun fa-lg d-none" style="color: black;"></i>
+                </button>
+            </div>
+
             <!-- Logout Button -->
-            <div class="mt-auto">
+            <div class="mt-auto ms-auto me-auto">
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <form method="post" action="~/Account/Logout">
-                        <button type="submit" class="btn btn-danger btn-block">
-                            <i class="fas fa-sign-out-alt mr-2"></i>
-                        </button>
-                    </form>
+                    <a asp-area="Identity" asp-page="/Account/Logout" class="btn btn-block">
+                        <i class="fas fa-sign-out-alt fa-lg mr-2" style="color: black;"></i>
+                    </a>
                 }
                 else
                 {
-                    <a href="~/Account/Login" class="btn btn-success btn-block">
-                        <i class="fas fa-sign-in-alt mr-2"></i>
+                    <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-block">
+                        <i class="fas fa-sign-in-alt fa-lg mr-2" style="color: black;"></i>
                     </a>
                 }
             </div>
         </div>
-
 
         <!-- Main Content Area -->
         <div class="flex-grow-1 p-0 m-0">
             @RenderBody()
         </div>
     </div>
+
+    <script>
+        const toggleDarkMode = document.getElementById('toggleDarkMode');
+        const moonIcon = document.getElementById('moonIcon');
+        const sunIcon = document.getElementById('sunIcon');
+
+        // Check user preference on load
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+            moonIcon.classList.add('d-none');
+            sunIcon.classList.remove('d-none');
+        }
+
+        toggleDarkMode.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+                moonIcon.classList.add('d-none');
+                sunIcon.classList.remove('d-none');
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+                moonIcon.classList.remove('d-none');
+                sunIcon.classList.add('d-none');
+            }
+        });
+    </script>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
