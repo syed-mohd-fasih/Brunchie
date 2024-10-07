@@ -33,16 +33,16 @@ namespace Brunchie.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult RegisterAsVendor()
+        [HttpGet]
+        public IActionResult Feedback()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult RegisterAsStudent()
+        public Task<IActionResult> Feedback(IActionResult result)
         {
-            return View();
+            return null;
         }
 
         public IActionResult Privacy()

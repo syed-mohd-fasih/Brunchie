@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Brunchie.Models;
 
 namespace Brunchie.Data;
 
@@ -19,4 +20,6 @@ public class UserDbContext : IdentityDbContext<BrunchieUser>
         // For example, you can rename the ASP.NET Identity table names and more.
         // Add your customizations after calling base.OnModelCreating(builder);
     }
+
+public DbSet<Brunchie.Models.Feedback> Feedback { get; set; } = default!;
 }

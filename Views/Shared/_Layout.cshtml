@@ -12,14 +12,16 @@
 <body>
     <div class="d-flex">
         <!-- Vertical Navbar -->
-        <div class="bg-white text-white vh-100 d-flex flex-column p-3" style="width: 100px;">
+        <div class="bg-secondary text-white vh-100 d-flex flex-column p-3" style="width: 100px;">
             <!-- Logo -->
             <div class="mb-4">
-                <img src="~/assets/temp.png" alt="Logo" class="mb-4 img-fluid" />
+                <img src="~/assets/Brunchie.png" alt="Logo" class="mb-4 img-fluid" />
             </div>
 
             <!-- Menu Items -->
             <ul class="nav flex-column mb-4">
+
+                <!-- Student NavBar -->
                 <li class="nav-item mb-3 ms-auto me-auto">
                     <a asp-action="Index" class="nav-link text-white">
                         <i class="fas fa-home" style="color: black;"></i>
@@ -31,12 +33,7 @@
                     </a>
                 </li>
                 <li class="nav-item mb-3 ms-auto me-auto">
-                    <a asp-action="Feedback" class="nav-link text-white">
-                        <i class="fas fa-comment-alt fa-lg" style="color: black;"></i>
-                    </a>
-                </li>
-                <li class="nav-item mb-3 ms-auto me-auto">
-                    <a asp-action="ActiveOrders" class="nav-link text-white">
+                    <a asp-action="Checkout" class="nav-link text-white">
                         <i class="fa-solid fa-bag-shopping fa-lg" style="color: black;"></i>
                     </a>
                 </li>
@@ -45,30 +42,41 @@
                         <i class="fas fa-history fa-lg" style="color: black;"></i>
                     </a>
                 </li>
+                <li class="nav-item mb-3 ms-auto me-auto">
+                    <a asp-controller="Home" asp-action="Feedback" class="nav-link text-white">
+                        <i class="fas fa-comment-alt fa-lg" style="color: black;"></i>
+                    </a>
+                </li>
+
+                <!-- Vendor NavBar -->
+
             </ul>
 
-            <!-- Theme Changer -->
-            <div>
-                <button id="toggleDarkMode" class="btn">
-                    <i id="moonIcon" class="fa-solid fa-moon fa-lg" style="color: black;"></i>
-                    <i id="sunIcon" class="fa-solid fa-sun fa-lg d-none" style="color: black;"></i>
-                </button>
-            </div>
-
-            <!-- Logout Button -->
+            <!-- Login/Logout Button and Theme Changer -->
             <div class="mt-auto ms-auto me-auto">
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <a asp-area="Identity" asp-page="/Account/Logout" class="btn btn-block">
-                        <i class="fas fa-sign-out-alt fa-lg mr-2" style="color: black;"></i>
-                    </a>
-                }
-                else
-                {
-                    <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-block">
-                        <i class="fas fa-sign-in-alt fa-lg mr-2" style="color: black;"></i>
-                    </a>
-                }
+                <ul class="nav flex-column mb-4">
+                    <li class="nav-item mb-3 ms-auto me-auto">
+                        <button id="toggleDarkMode" class="btn">
+                            <i id="moonIcon" class="fa-solid fa-moon fa-lg" style="color: black;"></i>
+                            <i id="sunIcon" class="fa-solid fa-sun fa-lg d-none" style="color: black;"></i>
+                        </button>
+                    </li>
+
+                    <li class="nav-item mb-3 ms-auto me-auto">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <a asp-area="Identity" asp-page="/Account/Logout" class="btn btn-block">
+                                <i class="fas fa-sign-out-alt fa-lg mr-2" style="color: black;"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-block">
+                                <i class="fas fa-sign-in-alt fa-lg mr-2" style="color: black;"></i>
+                            </a>
+                        }
+                    </li>
+                </ul>
             </div>
         </div>
 

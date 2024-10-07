@@ -409,5 +409,11 @@ namespace Brunchie.Controllers
             // Optionally, add a success message or handle redirection as needed
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public IActionResult History()
+        {
+            return View();
+        }
     }
 }

@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Feedback";
+}
+
+<h1>Feedback</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Feedback" method="post">
+            <div class="form-group">
+                <label class="control-label">Please leave your feedback here</label>
+                <input type="text" name="message" class="form-control" required/>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
