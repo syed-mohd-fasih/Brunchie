@@ -143,3 +143,31 @@ body {
         background-color: #3a3f44;
         border-color: #454d55;
     }
+
+    .dark-mode .modal-content {
+        background-color: #3a3f44;
+        color: #f8f9fa;
+        border-color: #454d55;
+    }
+
+    .dark-mode .modal-header {
+        border-bottom-color: #454d55;
+    }
+
+    .dark-mode .modal-footer {
+        border-top-color: #454d55;
+    }
+
+    .dark-mode .btn-close {
+        filter: invert(1);
+    }
+
+    .dark-mode .form-control {
+        background-color: #495057;
+        color: #f8f9fa;
+        border-color: #6c757d;
+    }
+
+        .dark-mode .form-control::placeholder {
+            color: #adb5bd;
+        }

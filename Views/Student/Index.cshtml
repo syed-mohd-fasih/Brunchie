@@ -3,113 +3,128 @@
     ViewData["Title"] = "Student Dashboard";
 }
 
-<div class="d-flex flex-column h-100">
-    <div class="row flex-grow-1">
-        <div class="col-lg-9 pr-lg-4">
-            <header class="mb-4">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h1 class="mb-0">Hello, @User.Identity.Name</h1>
-                </div>
-            </header>
-            <section class="mb-5">
-                <h2 class="mb-3">Campus Available Meals</h2>
-                <div class="row flex-nowrap overflow-auto pb-3">
-                    @if (Model.CampusMenuItems != null && Model.CampusMenuItems.Any())
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">Hello, @User.Identity.Name</h1>
+        <div>
+            <!-- Button to open the Account Details modal -->
+            <button class="btn btn-secondary me-2" data-bs-toggle="modal" data-bs-target="#accountDetailsModal">
+                <i class="fas fa-user"></i> Account Details
+            </button>
+
+            <!-- Button to open the Cart modal -->
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cartModal">
+                <i class="fas fa-shopping-cart"></i> View Cart
+            </button>
+        </div>
+    </div>
+
+    <section class="mb-5">
+        <h2 class="mb-3">Campus Available Meals</h2>
+        <div class="overflow-auto" style="max-height: 400px;">
+            <div class="d-flex flex-nowrap">
+                @if (Model.CampusMenuItems != null && Model.CampusMenuItems.Any())
+                {
+                    @foreach (var item in Model.CampusMenuItems)
                     {
-                        @foreach (var item in Model.CampusMenuItems)
-                        {
-                            <div class="col-md-4 col-lg-3">
-                                <div class="card h-100">
-                                    <img src="@item.Image" class="card-img-top" alt="@item.Name">
-                                    <div class="card-body d-flex flex-column">
-                                        <h5 class="card-title">@item.Name</h5>
-                                        <p class="card-text flex-grow-1">@item.Description</p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span class="fw-bold">$@item.Price.ToString("F2")</span>
-                                            <form asp-action="AddToCart" method="get">
-                                                <input type="hidden" name="menuItemId" value="@item.Id" />
-                                                <button type="submit" class="btn btn-primary btn-sm">
-                                                    <i class="fa-solid fa-plus"></i> Add
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
+                        <div class="card mx-2" style="width: 18rem;">
+                            <img src="@item.Image" class="card-img-top" alt="@item.Name" style="height: 180px; object-fit: cover;">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">@item.Name</h5>
+                                <p class="card-text flex-grow-1">@item.Description</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="fw-bold">$@item.Price.ToString("F2")</span>
+                                    <form asp-action="AddToCart" method="get">
+                                        <input type="hidden" name="menuItemId" value="@item.Id" />
+                                        <button type="submit" class="btn btn-primary btn-sm">
+                                            <i class="fa-solid fa-plus"></i> Add
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
-                        }
-                    }
-                    else
-                    {
-                        <div class="col-12">
-                            <p class="alert alert-info">There are no menu items available in your University/College</p>
                         </div>
                     }
-                </div>
-            </section>
-            <!-- Add more sections here as needed, e.g., Popular Items, Categories, etc. -->
+                }
+                else
+                {
+                    <div class="alert alert-info">There are no menu items available in your University/College</div>
+                }
+            </div>
         </div>
+    </section>
+</div>
 
-        <div class="col-lg-3 mt-4 mt-lg-0">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">Account Details</h5>
-                    <!-- Add account details here -->
-                </div>
+<!-- Account Details Modal -->
+<div class="modal fade" id="accountDetailsModal" tabindex="-1" aria-labelledby="accountDetailsLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="accountDetailsLabel">Account Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">Card Balance</h5>
-                    <!-- Add card balance information here -->
-                </div>
+            <div class="modal-body">
+                <p>Display the account details here.</p>
+                <!-- Add account details content here -->
             </div>
+        </div>
+    </div>
+</div>
 
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title mb-3">Cart</h5>
-                    @if (Model.StudentCart != null && Model.StudentCart.Orders != null && Model.StudentCart.Orders.Any())
+<!-- Cart Modal -->
+<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cartLabel">Your Cart</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @if (Model.StudentCart != null && Model.StudentCart.Orders != null && Model.StudentCart.Orders.Any())
+                {
+                    foreach (var order in Model.StudentCart.Orders)
                     {
-                        foreach (var order in Model.StudentCart.Orders)
+                        foreach (var item in order.OrderItems)
                         {
-                            foreach (var item in order.OrderItems)
-                            {
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <div>
-                                        <h6 class="mb-0">@item.Name</h6>
-                                        <small class="text-muted">@item.Quantity x $@item.PricePerPiece.ToString("F2")</small>
-                                    </div>
-                                    <span class="font-weight-bold">$@item.Price.ToString("F2")</span>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div>
+                                    <h6 class="mb-0">@item.Name</h6>
+                                    <small class="text-muted">@item.Quantity x $@item.PricePerPiece.ToString("F2")</small>
                                 </div>
-                                @if (!string.IsNullOrEmpty(item.SpecialInstruction))
-                                {
-                                    <small class="text-muted d-block mb-2">@item.SpecialInstruction</small>
-                                }
+                                <span class="font-weight-bold">$@item.Price.ToString("F2")</span>
+                            </div>
+                            @if (!string.IsNullOrEmpty(item.SpecialInstruction))
+                            {
+                                <small class="text-muted d-block mb-2">@item.SpecialInstruction</small>
                             }
                         }
-                        <hr>
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="font-weight-bold">Total</span>
-                            <span class="font-weight-bold">$@Model.StudentCart.Orders.Sum(o => o.OrderItems.Sum(i => i.Price)).ToString("F2")</span>
-                        </div>
-                        <a asp-action="Checkout" class="btn btn-primary btn-block">Proceed to Checkout</a>
                     }
-                    else
-                    {
-                        <p class="text-muted">Your cart is empty</p>
-                    }
-                </div>
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="font-weight-bold">Total</span>
+                        <span class="font-weight-bold">$@Model.StudentCart.Orders.Sum(o => o.OrderItems.Sum(i => i.Price)).ToString("F2")</span>
+                    </div>
+                    <a asp-action="Checkout" class="btn btn-primary">Proceed to Checkout</a>
+                }
+                else
+                {
+                    <p class="text-muted">Your cart is empty.</p>
+                }
             </div>
         </div>
     </div>
 </div>
 
 <style>
-    .overflow-auto::-webkit-scrollbar {
-        height: 8px;
+    .overflow-auto {
+        max-height: 400px;
     }
 
-    .overflow-auto::-webkit-scrollbar-thumb {
-        background-color: rgba(0, 0, 0, 0.2);
-        border-radius: 4px;
-    }
+        .overflow-auto::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .overflow-auto::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
 </style>
