@@ -10,111 +10,108 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="d-flex">
-        <!-- Vertical Navbar -->
-        <div class="bg-secondary text-white vh-100 d-flex flex-column p-3" style="width: 100px;">
-            <!-- Logo -->
-            <div class="mb-4">
-                <img src="~/assets/Brunchie.png" alt="Logo" class="mb-4 img-fluid" />
-            </div>
-
-            <!-- Menu Items -->
-            <ul class="nav flex-column mb-4">
-
-                <!-- Student NavBar -->
-                <li class="nav-item mb-3 ms-auto me-auto">
-                    <a asp-action="Index" class="nav-link text-white">
-                        <i class="fas fa-home" style="color: black;"></i>
-                    </a>
-                </li>
-                <li class="nav-item mb-3 ms-auto me-auto">
-                    <a asp-action="Favorites" class="nav-link text-white">
-                        <i class="fas fa-heart fa-lg" style="color: black;"></i>
-                    </a>
-                </li>
-                <li class="nav-item mb-3 ms-auto me-auto">
-                    <a asp-action="Checkout" class="nav-link text-white">
-                        <i class="fa-solid fa-bag-shopping fa-lg" style="color: black;"></i>
-                    </a>
-                </li>
-                <li class="nav-item mb-3 ms-auto me-auto">
-                    <a asp-action="History" class="nav-link text-white">
-                        <i class="fas fa-history fa-lg" style="color: black;"></i>
-                    </a>
-                </li>
-                <li class="nav-item mb-3 ms-auto me-auto">
-                    <a asp-controller="Home" asp-action="Feedback" class="nav-link text-white">
-                        <i class="fas fa-comment-alt fa-lg" style="color: black;"></i>
-                    </a>
-                </li>
-
-                <!-- Vendor NavBar -->
-
-            </ul>
-
-            <!-- Login/Logout Button and Theme Changer -->
-            <div class="mt-auto ms-auto me-auto">
-                <ul class="nav flex-column mb-4">
-                    <li class="nav-item mb-3 ms-auto me-auto">
-                        <button id="toggleDarkMode" class="btn">
-                            <i id="moonIcon" class="fa-solid fa-moon fa-lg" style="color: black;"></i>
-                            <i id="sunIcon" class="fa-solid fa-sun fa-lg d-none" style="color: black;"></i>
-                        </button>
-                    </li>
-
-                    <li class="nav-item mb-3 ms-auto me-auto">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <a asp-area="Identity" asp-page="/Account/Logout" class="btn btn-block">
-                                <i class="fas fa-sign-out-alt fa-lg mr-2" style="color: black;"></i>
-                            </a>
-                        }
-                        else
-                        {
-                            <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-block">
-                                <i class="fas fa-sign-in-alt fa-lg mr-2" style="color: black;"></i>
-                            </a>
-                        }
-                    </li>
-                </ul>
-            </div>
+    <div class="sidebar d-flex flex-column align-items-center py-4" style="min-width: 80px; width: 80px; min-height: 100vh;">
+        <!-- Logo -->
+        <div class="mb-4">
+            <img src="~/assets/Brunchie.png" alt="Logo" class="img-fluid" style="max-width: 40px;" />
         </div>
 
-        <!-- Main Content Area -->
-        <div class="flex-grow-1 p-0 m-0">
-            @RenderBody()
+        <!-- Menu Items -->
+        @if (User.Identity != null)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("Student"))
+                {
+                    <ul class="nav flex-column mb-auto">
+                        <li class="nav-item mb-3">
+                            <a asp-controller="Student" asp-action="Index" class="nav-link">
+                                <i class="fas fa-home nav-icon"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item mb-3">
+                            <a asp-controller="Student" asp-action="Favorites" class="nav-link">
+                                <i class="fas fa-heart nav-icon"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item mb-3">
+                            <a asp-controller="Student" asp-action="Checkout" class="nav-link">
+                                <i class="fa-solid fa-bag-shopping nav-icon"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item mb-3">
+                            <a asp-controller="Student" asp-action="History" class="nav-link">
+                                <i class="fas fa-history nav-icon"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item mb-3">
+                            <a asp-controller="Home" asp-action="Feedback" class="nav-link">
+                                <i class="fas fa-comment-alt nav-icon"></i>
+                            </a>
+                        </li>
+                    </ul>
+                }
+                else if (User.IsInRole("Vendor"))
+                {
+                    <!-- Need to edit for Vendor specific links -->
+                    <ul class="nav flex-column mb-auto">
+                        <li class="nav-item mb-3">
+                            <a asp-controller="Vendor" asp-action="Index" class="nav-link">
+                                <i class="fas fa-home nav-icon"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item mb-3">
+                            <a asp-controller="Vendor" asp-action="" class="nav-link">
+                                <i class="fas fa-heart nav-icon"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item mb-3">
+                            <a asp-controller="Vendor" asp-action="" class="nav-link">
+                                <i class="fa-solid fa-bag-shopping nav-icon"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item mb-3">
+                            <a asp-controller="Vendor" asp-action="" class="nav-link">
+                                <i class="fas fa-history nav-icon"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item mb-3">
+                            <a asp-controller="Home" asp-action="Feedback" class="nav-link">
+                                <i class="fas fa-comment-alt nav-icon"></i>
+                            </a>
+                        </li>
+                    </ul>
+                }
+            }
+        }
+
+        <!-- Theme Toggle and Login/Logout -->
+        <div class="mt-auto">
+            <button id="toggleDarkMode" class="btn btn-link nav-link mb-3">
+                <i id="themeIcon" class="fas fa-moon nav-icon"></i>
+            </button>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a asp-area="Identity" asp-page="/Account/Logout" class="btn btn-link nav-link">
+                    <i class="fas fa-sign-out-alt nav-icon"></i>
+                </a>
+            }
+            else
+            {
+                <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-link nav-link">
+                    <i class="fas fa-sign-in-alt nav-icon"></i>
+                </a>
+            }
         </div>
     </div>
 
-    <script>
-        const toggleDarkMode = document.getElementById('toggleDarkMode');
-        const moonIcon = document.getElementById('moonIcon');
-        const sunIcon = document.getElementById('sunIcon');
+    <div class="main-content">
+        @RenderBody()
+    </div>
 
-        // Check user preference on load
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            document.body.classList.add('dark-mode');
-            moonIcon.classList.add('d-none');
-            sunIcon.classList.remove('d-none');
-        }
-
-        toggleDarkMode.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            if (document.body.classList.contains('dark-mode')) {
-                localStorage.setItem('darkMode', 'enabled');
-                moonIcon.classList.add('d-none');
-                sunIcon.classList.remove('d-none');
-            } else {
-                localStorage.setItem('darkMode', 'disabled');
-                moonIcon.classList.remove('d-none');
-                sunIcon.classList.add('d-none');
-            }
-        });
-    </script>
-
+    <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -1,70 +1,115 @@
 ﻿@model Brunchie.ViewModels.StudentDashboardModel
-
 @{
     ViewData["Title"] = "Student Dashboard";
 }
 
-<div class="container-fluid d-flex h-100 p-0">
-    <!-- Main Content Area -->
-    <div class="container w-75 h-100">
-        <h1 class="p-3">Hello, @User.Identity.Name</h1>
-
-        <div class="content-container">
-            <!-- Content from your provided view -->
-            <!-- Campus Available Meals Carousel -->
-            <h2>Campus Available Meals</h2>
-            <div class="scroll-container">
-                @if (Model.CampusMenuItems != null && Model.CampusMenuItems.Any())
-                {
-                    @foreach (var item in Model.CampusMenuItems)
+<div class="d-flex flex-column h-100">
+    <div class="row flex-grow-1">
+        <div class="col-lg-9 pr-lg-4">
+            <header class="mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1 class="mb-0">Hello, @User.Identity.Name</h1>
+                </div>
+            </header>
+            <section class="mb-5">
+                <h2 class="mb-3">Campus Available Meals</h2>
+                <div class="row flex-nowrap overflow-auto pb-3">
+                    @if (Model.CampusMenuItems != null && Model.CampusMenuItems.Any())
                     {
-                        <div class="card">
-                            <img src="@item.Image" class="card-img-top" alt="@item.Name">
-                            <div class="card-body">
-                                <h5 class="card-title">@item.Name</h5>
-                                <p class="card-text">@item.Description</p>
-                                <form asp-action="AddToCart" method="get">
-                                    <input type="hidden" name="menuItemId" value="@item.Id" />
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fa-solid fa-plus"></i>
-                                    </button>
-                                </form>
+                        @foreach (var item in Model.CampusMenuItems)
+                        {
+                            <div class="col-md-4 col-lg-3">
+                                <div class="card h-100">
+                                    <img src="@item.Image" class="card-img-top" alt="@item.Name">
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="card-title">@item.Name</h5>
+                                        <p class="card-text flex-grow-1">@item.Description</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="fw-bold">$@item.Price.ToString("F2")</span>
+                                            <form asp-action="AddToCart" method="get">
+                                                <input type="hidden" name="menuItemId" value="@item.Id" />
+                                                <button type="submit" class="btn btn-primary btn-sm">
+                                                    <i class="fa-solid fa-plus"></i> Add
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-12">
+                            <p class="alert alert-info">There are no menu items available in your University/College</p>
                         </div>
                     }
-                }
-                else
-                {
-                    <p>There are no menu items to order in your University/College</p>
-                }
+                </div>
+            </section>
+            <!-- Add more sections here as needed, e.g., Popular Items, Categories, etc. -->
+        </div>
+
+        <div class="col-lg-3 mt-4 mt-lg-0">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Account Details</h5>
+                    <!-- Add account details here -->
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Card Balance</h5>
+                    <!-- Add card balance information here -->
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Cart</h5>
+                    @if (Model.StudentCart != null && Model.StudentCart.Orders != null && Model.StudentCart.Orders.Any())
+                    {
+                        foreach (var order in Model.StudentCart.Orders)
+                        {
+                            foreach (var item in order.OrderItems)
+                            {
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div>
+                                        <h6 class="mb-0">@item.Name</h6>
+                                        <small class="text-muted">@item.Quantity x $@item.PricePerPiece.ToString("F2")</small>
+                                    </div>
+                                    <span class="font-weight-bold">$@item.Price.ToString("F2")</span>
+                                </div>
+                                @if (!string.IsNullOrEmpty(item.SpecialInstruction))
+                                {
+                                    <small class="text-muted d-block mb-2">@item.SpecialInstruction</small>
+                                }
+                            }
+                        }
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="font-weight-bold">Total</span>
+                            <span class="font-weight-bold">$@Model.StudentCart.Orders.Sum(o => o.OrderItems.Sum(i => i.Price)).ToString("F2")</span>
+                        </div>
+                        <a asp-action="Checkout" class="btn btn-primary btn-block">Proceed to Checkout</a>
+                    }
+                    else
+                    {
+                        <p class="text-muted">Your cart is empty</p>
+                    }
+                </div>
             </div>
         </div>
     </div>
-
-    <!-- Cart Column -->
-    <div class="bg-light border-left w-25 h-100 p-3">
-        <div>
-            Account Details here
-        </div>
-        <h3>Card</h3>
-        <!-- Some kind of debit/credit card div that shows account balance -->
-        <h3>Cart</h3>
-        @if (Model.StudentCart != null && Model.StudentCart.Orders != null && Model.StudentCart.Orders.Any())
-        {
-            @foreach (var order in Model.StudentCart.Orders)
-            {
-                @foreach(var item in order.OrderItems)
-                {
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">@item.Name (@item.Quantity) @@ @item.PricePerPiece</h5>
-                            <h6 class="card-text">@item.SpecialInstruction</h6>
-                        </div>
-                        <h3>@item.Price</h3>
-                    </div>
-                }
-            }
-            <a asp-action="Checkout" class="btn btn-success mt-3">Proceed to Checkout</a>
-        }
-    </div>
 </div>
+
+<style>
+    .overflow-auto::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .overflow-auto::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+    }
+</style>

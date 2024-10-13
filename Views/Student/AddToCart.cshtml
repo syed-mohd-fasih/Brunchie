@@ -1,42 +1,82 @@
 ﻿@model Brunchie.Models.MenuItem
+@{
+    ViewData["Title"] = "Add To Cart";
+}
 
-<div class="container mt-4">
-    <h2>Add @Model.Name to Cart</h2>
-    <div class="row">
-        <div class="col-md-6">
-            <img src="@Model.Image" alt="@Model.Name" class="img-fluid" />
-        </div>
-        <div class="col-md-6">
-            <form asp-action="AddToCart" method="post">
-                <input type="hidden" name="menuItemId" value="@Model.Id" />
-                <div class="form-group">
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" name="quantity" id="quantity" value="1" class="form-control" min="1" />
+<div class="d-flex flex-column w-100 h-100">
+    <h1 class="mb-4">Add to Cart</h1>
+    <div class="card m-auto shadow-sm border-0">
+        <div class="row g-0">
+            <div class="col-md-5">
+                <img src="@Model.Image" alt="@Model.Name" class="card-img img-fluid rounded-start h-100 object-fit-cover" />
+            </div>
+            <div class="col-md-7">
+                <div class="card-body">
+                    <h2 class="card-title text-dark">@Model.Name</h2>
+                    <p class="card-text text-muted">@Model.Description</p>
+                    <form asp-action="AddToCart" method="post" class="mt-4">
+                        <input type="hidden" name="menuItemId" value="@Model.Id" />
+                        <div class="mb-3">
+                            <label for="quantity" class="form-label">Quantity:</label>
+                            <input type="number" name="quantity" id="quantity" value="1" class="form-control" min="1" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="specialInstructions" class="form-label">Special Instructions:</label>
+                            <textarea name="specialInstructions" id="specialInstructions" class="form-control" rows="3" placeholder="Add any special requests..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Total Price:</label>
+                            <h3 id="totalPrice" class="text-primary">@Model.Price.ToString("C")</h3>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">Add to Cart</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label for="specialInstructions">Special Instructions:</label>
-                    <textarea name="specialInstructions" id="specialInstructions" class="form-control"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Total Price: </label>
-                    <span id="totalPrice">@Model.Price.ToString("C")</span>
-                </div>
-                <button type="submit" class="btn btn-primary">Add to Cart</button>
-            </form>
+            </div>
         </div>
     </div>
 </div>
 
+<style>
+    .card {
+    border-radius: 10px; /* Smooth rounded corners */
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+.card-img {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    object-fit: cover;
+}
+
+@@media (max-width: 767px) {
+    .card-img {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-left-radius: 0;
+        height: 250px; /* Set a height for better scaling on smaller screens */
+    }
+}
+
+</style>
+
 @section Scripts {
     <script>
-        const pricePerItem = @Model.Price;
+        const pricePerItem = @Json.Serialize(Model.Price);
         const quantityInput = document.getElementById("quantity");
         const totalPriceElement = document.getElementById("totalPrice");
 
-        quantityInput.addEventListener("input", function () {
+        function updateTotalPrice() {
             const quantity = parseInt(quantityInput.value) || 1;
             const totalPrice = (pricePerItem * quantity).toFixed(2);
             totalPriceElement.innerText = `$${totalPrice}`;
-        });
+        }
+
+        quantityInput.addEventListener("input", updateTotalPrice);
+        updateTotalPrice();
     </script>
 }

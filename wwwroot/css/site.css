@@ -86,3 +86,60 @@ body {
     .form-container h2 {
         margin-bottom: 1.5rem;
     }
+
+
+
+body {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 150px;
+    background-color: #f8f9fa;
+    transition: all 0.3s;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    transition: all 0.3s;
+}
+
+.order-sidebar {
+    width: 300px;
+    background-color: #f1f3f5;
+    padding: 20px;
+    transition: all 0.3s;
+}
+
+.nav-icon {
+    font-size: 1.5rem;
+    color: #495057;
+}
+
+    .nav-icon:hover {
+        color: #007bff;
+    }
+
+.dark-mode {
+    background-color: #343a40;
+    color: #f8f9fa;
+}
+
+    .dark-mode .sidebar, .dark-mode .order-sidebar {
+        background-color: #212529;
+    }
+
+    .dark-mode .nav-icon {
+        color: #f8f9fa;
+    }
+
+        .dark-mode .nav-icon:hover {
+            color: #007bff;
+        }
+
+    .dark-mode .card {
+        background-color: #3a3f44;
+        border-color: #454d55;
+    }

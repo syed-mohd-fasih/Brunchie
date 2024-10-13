@@ -218,12 +218,6 @@ namespace Brunchie.Controllers
 
                 // Save changes to update the cart with cleared orders
                 await _appDbContext.SaveChangesAsync();
-
-                //// Add the processed orders to the Orders table
-                //await _appDbContext.Orders.AddRangeAsync(processedOrders);
-
-                //// Save the changes to the database to store the new orders
-                //await _appDbContext.SaveChangesAsync();
             }
 
             return RedirectToAction(nameof(OrderConfirmation));
@@ -412,6 +406,12 @@ namespace Brunchie.Controllers
 
         [HttpGet]
         public IActionResult History()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Favorites()
         {
             return View();
         }

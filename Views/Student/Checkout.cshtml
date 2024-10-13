@@ -5,57 +5,77 @@
 }
 
 <div class="container">
-    <h2>Your Cart</h2>
+    <h2 class="mb-4">Your Cart</h2>
     @if (Model.Orders != null && Model.Orders.Count > 0)
     {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Vendor</th>
-                    <th>Item Name</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Special Instructions</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var order in Model.Orders)
+        <div class="row g-3">
+            @foreach (var order in Model.Orders)
+            {
+                <div class="col-12">
+                    <h4 class="text-muted">Vendor: @order.VendorId</h4>
+                </div>
+                @foreach (var item in order.OrderItems)
                 {
-                    foreach (var item in order.OrderItems)
-                    {
-                        <tr>
-                            <td>@order.VendorId</td>
-                            <td>@item.Name</td>
-                            <td>
-                                <form asp-action="UpdateCart" method="post">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body">
+                                <h5 class="card-title">@item.Name</h5>
+                                <p class="card-text">
+                                    <strong>Price:</strong> @item.Price.ToString("C") <br />
+                                    <strong>Special Instructions:</strong> @item.SpecialInstruction
+                                </p>
+                                <form asp-action="UpdateCart" method="post" class="d-flex mb-3">
                                     <input type="hidden" name="itemId" value="@item.Id" />
-                                    <input type="number" name="quantity" value="@item.Quantity" class="form-control" />
-                                    <button type="submit" class="btn btn-primary">Update</button>
+                                    <input type="number" name="quantity" value="@item.Quantity" class="form-control me-2" min="1" required />
+                                    <button type="submit" class="btn btn-outline-primary">Update</button>
                                 </form>
-                            </td>
-                            <td>@item.Price.ToString("C")</td>
-                            <td>@item.SpecialInstruction</td>
-                            <td>
-                                <form asp-action="RemoveItem" method="post">
+                                <form asp-action="RemoveItem" method="post" class="d-grid">
                                     <input type="hidden" name="itemId" value="@item.Id" />
-                                    <button type="submit" class="btn btn-danger">Remove</button>
+                                    <button type="submit" class="btn btn-outline-danger">Remove</button>
                                 </form>
-                            </td>
-                        </tr>
-                    }
+                            </div>
+                        </div>
+                    </div>
                 }
-            </tbody>
-        </table>
+            }
+        </div>
 
-        <h4>Total Price: @Model.Orders.Sum(o => o.TotalPrice).ToString("C")</h4>
-
-        <form asp-action="PlaceOrder" method="post">
-            <button type="submit" class="btn btn-success">Place Order</button>
-        </form>
+        <div class="mt-4">
+            <h4 class="text-end">Total Price: <span class="text-primary">@Model.Orders.Sum(o => o.TotalPrice).ToString("C")</span></h4>
+            <form asp-action="PlaceOrder" method="post" class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                <button type="submit" class="btn btn-success btn-lg">Place Order</button>
+            </form>
+        </div>
     }
     else
     {
-        <p>Your cart is empty.</p>
+        <div class="alert alert-info" role="alert">
+            Your cart is empty.
+        </div>
     }
 </div>
+
+<style>
+    .card {
+    border-radius: 10px; /* Smooth rounded corners */
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-title {
+    font-weight: 600;
+}
+
+.card .btn {
+    border-radius: 5px; /* Consistent button styling */
+}
+
+@@media (max-width: 767px) {
+    .card {
+        margin-bottom: 1rem; /* Add spacing between cards on smaller screens */
+    }
+}
+
+</style>
