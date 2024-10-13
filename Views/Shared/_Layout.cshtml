@@ -25,27 +25,27 @@
                 {
                     <ul class="nav flex-column mb-auto">
                         <li class="nav-item mb-3">
-                            <a asp-controller="Student" asp-action="Index" class="nav-link">
+                            <a asp-controller="Student" asp-action="Index" class="nav-link" title="Dashboard">
                                 <i class="fas fa-home nav-icon"></i>
                             </a>
                         </li>
                         <li class="nav-item mb-3">
-                            <a asp-controller="Student" asp-action="Favorites" class="nav-link">
+                            <a asp-controller="Student" asp-action="Favorites" class="nav-link" title="Favorites">
                                 <i class="fas fa-heart nav-icon"></i>
                             </a>
                         </li>
                         <li class="nav-item mb-3">
-                            <a asp-controller="Student" asp-action="Checkout" class="nav-link">
+                            <a asp-controller="Student" asp-action="Checkout" class="nav-link" title="Checkout">
                                 <i class="fa-solid fa-bag-shopping nav-icon"></i>
                             </a>
                         </li>
                         <li class="nav-item mb-3">
-                            <a asp-controller="Student" asp-action="History" class="nav-link">
+                            <a asp-controller="Student" asp-action="History" class="nav-link" title="Order History">
                                 <i class="fas fa-history nav-icon"></i>
                             </a>
                         </li>
                         <li class="nav-item mb-3">
-                            <a asp-controller="Home" asp-action="Feedback" class="nav-link">
+                            <a asp-controller="Home" asp-action="Feedback" class="nav-link" title="Feedback">
                                 <i class="fas fa-comment-alt nav-icon"></i>
                             </a>
                         </li>
@@ -53,34 +53,39 @@
                 }
                 else if (User.IsInRole("Vendor"))
                 {
-                    <!-- Need to edit for Vendor specific links -->
                     <ul class="nav flex-column mb-auto">
                         <li class="nav-item mb-3">
-                            <a asp-controller="Vendor" asp-action="Index" class="nav-link">
+                            <a asp-controller="Vendor" asp-action="Index" class="nav-link" title="Dashboard">
                                 <i class="fas fa-home nav-icon"></i>
                             </a>
                         </li>
                         <li class="nav-item mb-3">
-                            <a asp-controller="Vendor" asp-action="" class="nav-link">
-                                <i class="fas fa-heart nav-icon"></i>
+                            <a asp-controller="Vendor" asp-action="Menus" class="nav-link" title="Manage Menus">
+                                <i class="fas fa-utensils nav-icon"></i>
                             </a>
                         </li>
                         <li class="nav-item mb-3">
-                            <a asp-controller="Vendor" asp-action="" class="nav-link">
-                                <i class="fa-solid fa-bag-shopping nav-icon"></i>
+                            <a asp-controller="Vendor" asp-action="Orders" class="nav-link" title="Manage Orders">
+                                <i class="fas fa-receipt nav-icon"></i>
                             </a>
                         </li>
                         <li class="nav-item mb-3">
-                            <a asp-controller="Vendor" asp-action="" class="nav-link">
-                                <i class="fas fa-history nav-icon"></i>
+                            <a asp-controller="Vendor" asp-action="Analytics" class="nav-link" title="Analytics">
+                                <i class="fas fa-chart-line nav-icon"></i>
                             </a>
                         </li>
                         <li class="nav-item mb-3">
-                            <a asp-controller="Home" asp-action="Feedback" class="nav-link">
+                            <a asp-controller="Vendor" asp-action="Reviews" class="nav-link" title="Customer Reviews">
+                                <i class="fas fa-comment-dots nav-icon"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item mb-3">
+                            <a asp-controller="Home" asp-action="Feedback" class="nav-link" title="Feedback">
                                 <i class="fas fa-comment-alt nav-icon"></i>
                             </a>
                         </li>
                     </ul>
+
                 }
             }
         }

@@ -31,6 +31,26 @@ namespace Brunchie.Controllers
             var userId = user.Id;
             var userCampus = user.CampusName;
 
+            VendorDashboardModel model = new VendorDashboardModel
+            {
+                CampusName = userCampus,
+                TotalOrders = 500,
+                TotalRevenue = 6473,
+            };
+            
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Orders()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var userId = user.Id;
+
             var orders = await _appDbContext.Orders
                 .Where(o => o.VendorId == userId && o.Status == Order.OrderStatus.Received)
                 .Include(o => o.OrderItems)
@@ -39,34 +59,72 @@ namespace Brunchie.Controllers
                 .Where(o => o.VendorId == userId && o.Status == Order.OrderStatus.Completed)
                 .Include(o => o.OrderItems)
                 .ToListAsync();
+
+            return View(orders);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Menus()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var userId = user.Id;
+
             var menus = await _appDbContext.Menus
                 .Where(m => m.VendorId == userId)
                 .Include(m => m.MenuItems)
                 .ToListAsync();
-            var totalOrders = completedOrders.Count();
 
-            decimal totalRevenue = 0;
-            foreach (var order in completedOrders)
+            return View(menus);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> OrderDetails(string orderId)
+        {
+            if (string.IsNullOrWhiteSpace(orderId))
             {
-                totalRevenue += order.TotalPrice;
+                _logger.LogWarning($"{nameof(OrderDetails)}: Order ID is null or empty");
+                return BadRequest("Order ID is required.");
             }
+
+            var order = await _appDbContext.Orders
+                .Include(o => o.OrderItems)
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+
+            if (order == null)
+            {
+                _logger.LogError($"{nameof(OrderDetails)}: Order with ID {orderId} not found");
+                return NotFound();
+            }
+
+            return View(order);
+        }
+
+
+        [HttpGet]
+        public IActionResult Analytics()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Reviews()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var userId = user.Id;
 
             var reviews = await _appDbContext.Reviews
                 .Where(r => r.VendorId == userId)
                 .ToListAsync();
 
-            VendorDashboardModel model = new VendorDashboardModel
-            {
-                CampusName = userCampus,
-                TodayOrders = orders,
-                CompletedOrders = completedOrders,
-                Menus = menus,
-                TotalOrders = totalOrders,
-                TotalRevenue = totalRevenue,
-                CustomerReviews = reviews
-            };
-            
-            return View(model);
+            return View();
         }
 
         [HttpGet]

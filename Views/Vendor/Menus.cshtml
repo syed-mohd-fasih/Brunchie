@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Brunchie.Models.Menu>
+@{
+    ViewData["Title"] = "Manage Menus";
+}
+
+<div class="container mt-4">
+    <div class="d-flex mb-4">
+        <div class="float-start">
+            <h1 class="mb-4">Manage Menus</h1>
+            <p class="lead">Create and manage your menus.</p>
+        </div>
+        <div class="float-end">
+            <a asp-action="AddMenu" class="btn btn-primary">
+                <i class="fas fa-plus me-1"></i> Add New Menu
+            </a>
+        </div>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="row g-4">
+            @foreach (var menu in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="mb-0">@menu.Name</h4>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted mb-0">Contains @menu.MenuItems.Count items</p>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between">
+                            <a asp-action="EditMenu" asp-route-id="@menu.Id" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <form asp-action="DeleteMenu" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@menu.Id" />
+                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            You have no menus yet. Click "Add New Menu" to create your first menu.
+        </div>
+    }
+</div>
