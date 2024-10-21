@@ -4,9 +4,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Brunchie.Services
 {
-    public class VendorService(AppDbContext appDbContext)
+    public class VendorService
     {
-        private readonly AppDbContext _appDbContext = appDbContext;
+        private readonly AppDbContext _appDbContext;
+
+        public VendorService(AppDbContext appDbContext)
+        {
+            _appDbContext = appDbContext;
+        }
 
         public async Task<List<Menu>> GetMenus()
         {

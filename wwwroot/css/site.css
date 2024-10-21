@@ -1,26 +1,31 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 html, body {
     height: 100%;
     margin: 0;
-    padding: 0
+    padding: 0;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
 }
 
 /* Light/Dark/Color Mode config */
@@ -46,33 +51,34 @@ body {
 
 /* Custom CSS */
 
-.content-container {
-    flex-grow: 1;
-    overflow-y: auto;
-    padding: 20px;
-    height: 90vh;
+.container {
+    width: 100%;
+    margin: auto;
 }
 
-.container-fluid {
+.main-content {
+    width: 100%;
+    height: 100%;
+    margin-left: 150px;
+    transition: margin-left 0.3s ease-in-out;
+    padding: 5px;
     display: flex;
-    height: 100vh;
+    justify-content: center;
+    align-items: center;
 }
-
-.scroll-container {
-    display: flex;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding: 20px 0;
-}
-
-    .scroll-container::-webkit-scrollbar {
-        display: none;
-    }
 
 .card {
     min-width: 250px;
     margin-right: 25px;
 }
+
+@media (min-width: 768px) {
+    .card {
+        min-width: 100px;
+        margin-right: 5px;
+    }
+}
+
 
 .form-container {
     min-width: 400px;
@@ -87,23 +93,72 @@ body {
         margin-bottom: 1.5rem;
     }
 
+/* Limit the height of sections and allow scrolling within them */
+.scrollable-container {
+    max-height: calc(100vh - 150px); /* Adjust the height based on available space */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding-right: 1rem; /* Prevent scrollbar overlap */
+}
 
-
-body {
-    display: flex;
-    min-height: 100vh;
+/* For horizontal overflow, ensure it doesn't cause page-wide scrolling */
+.horizontal-scroll {
+    overflow-x: auto;
+    white-space: nowrap; /* Prevent wrapping, useful for horizontal lists */
 }
 
 .sidebar {
-    width: 150px;
-    background-color: #f8f9fa;
-    transition: all 0.3s;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 100px;
+    background-color: #ffffff;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    transition: width 0.3s ease-in-out;
+    z-index: 1000;
 }
 
-.main-content {
-    flex-grow: 1;
-    padding: 20px;
-    transition: all 0.3s;
+    .sidebar .nav-link {
+        color: #333;
+        text-align: center;
+        padding: 15px 20px;
+        white-space: nowrap;
+    }
+
+.nav-icon {
+    margin-right: 10px;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 60px;
+    }
+
+    .main-content {
+        margin-left: 60px;
+    }
+
+    .sidebar .nav-link {
+        text-align: center;
+        padding: 15px 0;
+    }
+
+        .sidebar .nav-link .nav-icon {
+            margin-right: 0;
+        }
+
+        .sidebar .nav-link span {
+            display: none;
+        }
+
+    .sidebar:hover .nav-link span {
+        display: inline;
+    }
+
+    .sidebar:hover .nav-link {
+        text-align: left;
+        padding: 15px 20px;
+    }
 }
 
 .order-sidebar {
@@ -169,5 +224,15 @@ body {
     }
 
         .dark-mode .form-control::placeholder {
+            color: #adb5bd;
+        }
+
+    .dark-mode .form-container {
+        background-color: #495057;
+        color: #f8f9fa;
+        border-color: #6c757d;
+    }
+
+        .dark-mode .form-container::placeholder {
             color: #adb5bd;
         }

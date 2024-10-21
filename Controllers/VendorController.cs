@@ -12,14 +12,27 @@ using System.Security.Claims;
 namespace Brunchie.Controllers
 {
     [Authorize(Policy = "vendor")]
-    public class VendorController(ILogger<VendorController> logger, UserManager<BrunchieUser> userManager, VendorService vendorService, StudentService studentService, AppDbContext appDbContext)
-        : Controller
+    public class VendorController : Controller
     {
-        public ILogger<VendorController> _logger = logger;
-        public UserManager<BrunchieUser> _userManager = userManager;
-        public VendorService _vendorService = vendorService;
-        public StudentService _studentService = studentService;
-        public AppDbContext _appDbContext = appDbContext;
+        public ILogger<VendorController> _logger { get; }
+        public UserManager<BrunchieUser> _userManager { get; }
+        public VendorService _vendorService { get; }
+        public StudentService _studentService { get; }
+        public AppDbContext _appDbContext { get; }
+
+        public VendorController(
+            ILogger<VendorController> logger,
+            UserManager<BrunchieUser> userManager,
+            VendorService vendorService,
+            StudentService studentService,
+            AppDbContext appDbContext)
+        {
+            _logger = logger;
+            _userManager = userManager;
+            _vendorService = vendorService;
+            _studentService = studentService;
+            _appDbContext = appDbContext;
+        }
 
         public async Task<IActionResult> Index()
         {

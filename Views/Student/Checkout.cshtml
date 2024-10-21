@@ -40,7 +40,7 @@
             }
         </div>
 
-        <div class="mt-4">
+        <div class="mt-4 p-3">
             <h4 class="text-end">Total Price: <span class="text-primary">@Model.Orders.Sum(o => o.TotalPrice).ToString("C")</span></h4>
             <form asp-action="PlaceOrder" method="post" class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
                 <button type="submit" class="btn btn-success btn-lg">Place Order</button>
@@ -77,5 +77,4 @@
         margin-bottom: 1rem; /* Add spacing between cards on smaller screens */
     }
 }
-
 </style>
